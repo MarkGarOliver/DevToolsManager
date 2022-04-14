@@ -53,6 +53,7 @@
 ### Download dos Modulos | importar no app.js | Configurações inicias
 
 [x] Download
+
     - npm install --save express express-handlebars body-parser path mongoose session flash
 
 [x] Importar modulos no app.
@@ -87,7 +88,34 @@
     ```
 
 [x] Estruturar pastas base
+    - models
 
-[x] Validar se oo Bootstrap está ok
+    - public
+        - css
+        - js
+        - img
+    
+    - routes
 
-[] Criar repositório Git e GitHub
+    -views
+        - layouts
+        - partials
+        - adm
+
+[x] Configurar e Validar se o Bootstrap está ok
+    Em app.js:
+
+    ```
+        //public bootstrap
+            app.use(express.static(path.join(__dirname + '/public')))
+
+    ```
+    Na view main do handlebars: 
+
+    ```
+
+        <link rel="stylesheet" href="/css/bootstrap.css">
+
+    ```
+
+[x] Criar repositório Git e GitHub
