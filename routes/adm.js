@@ -54,8 +54,7 @@ const Tarefa = mongoose.model('tarefa')
                 })
             })
 
-        //Marcar como feita /todolist/marcarcomofeita
-
+        //Marcar tarefa como feita
         router.post('/todolist/marcarcomofeita', (req, res)=>{
 
             const id = `${req.body.id}`
@@ -68,5 +67,12 @@ const Tarefa = mongoose.model('tarefa')
 
             // revisar código marcar como feita, listar os feitos na view feitas
             // verificar código tarefa.save()
-
+        
+        //Deletar tarefa
+            router.post('/todolist/delete', (req, res)=>{
+                Tarefa.findByIdAndRemove(req.body.id).then(()=>{
+                    req.flash('success_msg', 'deletado com sucesso')
+                    res.redirect('/adm/todolist/feitas')
+                })
+            })
 module.exports = router
