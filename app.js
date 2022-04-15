@@ -15,7 +15,7 @@ const res = require('express/lib/response')
         app.use(session({
             secret: 'SnruYtwx9vfxx7ghZZ',
             resave: true,
-            saveUnitialized: true
+            saveUninitialized: true
         }))
         app.use(flash())
     //Middleware

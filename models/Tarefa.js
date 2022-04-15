@@ -22,4 +22,4 @@ const Tarefa = new Schema({
 })
 
 
-mongoose.model('Tarefa', Tarefa)
+mongoose.model('tarefa', Tarefa)

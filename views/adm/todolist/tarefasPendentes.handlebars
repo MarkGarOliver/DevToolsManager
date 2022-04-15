@@ -35,9 +35,13 @@
         <br><br>
         <small>data de criação: {{data}}</small>
         <br><br>
-        <a href="#{{_id}}">
-            <button class="btn btn-primary mt4">Marcar como Feita</button>
-        </a>
+        <form method="post" action="/adm/todolist/marcarcomofeita">
+        
+          <input name="id" type="hidden" value="{{_id}}">
+          <button type="submit" class="btn btn-primary mt4">Marcar como Feita</button>
+          
+
+        </form>
     </div>
   </div>
 {{/each}}

@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const res = require('express/lib/response')
+
 const mongoose = require('mongoose')
 require('../models/Tarefa')
 
-const Tarefa = mongoose.model('Tarefa')
+const Tarefa = mongoose.model('tarefa')
 
 
 
@@ -26,8 +28,13 @@ const Tarefa = mongoose.model('Tarefa')
             })
 
         //Tarefas Feitas
+    
             router.get('/todolist/feitas', (req, res)=>{
-                res.render('adm/todolist/tarefasFeitas')
+                Tarefa.find({estado: 'concluida'}).lean().then((tarefasFeitas)=>{
+
+                    res.render('adm/todolist/tarefasFeitas', {tarefasFeitas: tarefasFeitas})
+                })
+                
             })
 
         //Criar nova Tarefa
@@ -45,10 +52,21 @@ const Tarefa = mongoose.model('Tarefa')
                     res.redirect('/todolist/tarefasPendentes')
                     console.error(error)
                 })
-
-           
             })
 
+        //Marcar como feita /todolist/marcarcomofeita
 
+        router.post('/todolist/marcarcomofeita', (req, res)=>{
+
+            const id = `${req.body.id}`
+
+            Tarefa.findByIdAndUpdate({_id: id}, {'estado': 'concluida'}).lean().then((tarefa)=>{
+                req.flash('success_msg', 'Marcada Como Feita')
+                res.redirect('/adm/todolist/feitas')
+            })
+        })
+
+            // revisar código marcar como feita, listar os feitos na view feitas
+            // verificar código tarefa.save()
 
 module.exports = router
