@@ -181,3 +181,12 @@ Em app.js
     
     
     ```
+
+### TodoList
+
+[x] Criar rota para a aplicação TodoList
+
+[] Criar aplicação TodoList
+
+[] Criar Model para Todolist
+

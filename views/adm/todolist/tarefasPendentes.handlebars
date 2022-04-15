@@ -1,0 +1,43 @@
+<h2>Tarefas Pendentes</h2>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/adm/todolist">Pendente</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/adm/todolist/feitas">Feitas</a>
+  </li>
+
+</ul>
+
+<form method="post" action="/adm/todolist/nova">
+    <div class="input-group mt-4">
+      <input name="nome" type="text" class="form-control" placeholder="NOVA TAREFA" aria-label="NOVA TAREFA" aria-describedby="button-addon2">
+      <button class="btn btn-primary" type="submit" id="button-addon2">Criar Tarefa</button>
+    </div>
+
+    <div class="input-group mt-4">
+      <span class="input-group-text">Comentário</span>
+      <textarea name="coments" class="form-control" aria-label="With textarea"></textarea>
+    </div>
+
+</form>
+
+{{!-- vou listar as tarefas ainda nao feitas --}}
+
+{{#each tarefas}}
+
+  <div class="card mt-4">
+    <div class="card-body">
+        <h4>{{nome}}</h4>
+        <br>
+        <small>{{comentario}}</small>
+        <br><br>
+        <small>data de criação: {{data}}</small>
+        <br><br>
+        <a href="#{{_id}}">
+            <button class="btn btn-primary mt4">Marcar como Feita</button>
+        </a>
+    </div>
+  </div>
+{{/each}}
