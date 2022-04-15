@@ -30,7 +30,7 @@
     - body-parser
     - path
     - mongoose
-    - session
+    - express-session
     - flash
     - bootstrap
 
@@ -63,7 +63,7 @@
         const handlebars = require('express-handlebars')
         const bodyParser = require('body-parser')
         const path = require('path')
-        const session = require('session')
+        const session = require('express-session')
         const flash = require('connect-flash')
 
     ```
@@ -127,8 +127,44 @@ Na view main do handlebars:
 [x] Criar repositório Git e GitHub
 
 
-[] Configurar Session e connect-flash para exibição de erros 
-    - middleware
+[x] Configurar Session e connect-flash para exibição de erros 
+em app.js: 
 
+    ```
+        //sessão
+            app.use(session({
+                secret: 'SnruYtwx9vfxx7ghZZ',
+                resave: true,
+                saveUnitialized: true
+            }))
+            app.use(flash())
+        //Middleware
+            app.use((req, res, next) =>{
+                res.locals.success_msg = req.flash("success_msg")
+                res.locals.error_msg = req.flash("error_msg")
+
+                next()
+            })
+        
+    ```
+
+[x] Criar partials para exibição de erros e colocar no main.handlebars
+
+Em partials/_msg.handlebars
+
+    ```
+        {{#if success_msg}}
+            <div class="alert alert-success">
+                {{success_msg}}
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div class="alert alert-danger">
+                {{error_msg}}
+            </div>
+        {{/if}}
+        
+    ```
 
 [] Configurar o Banco de dados Mongodb com Mongoose

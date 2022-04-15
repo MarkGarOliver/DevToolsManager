@@ -8,9 +8,8 @@ const router = express.Router()
 
 //rotas
     router.get('/', (req, res)=>{
-        res.render('adm/home')
+        res.render('adm/home')   
     })
-
 
 
 
