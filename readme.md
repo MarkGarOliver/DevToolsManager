@@ -125,3 +125,10 @@ Na view main do handlebars:
 
 
 [x] Criar repositório Git e GitHub
+
+
+[] Configurar Session e connect-flash para exibição de erros 
+    - middleware
+
+
+[] Configurar o Banco de dados Mongodb com Mongoose
