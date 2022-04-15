@@ -167,4 +167,17 @@ Em partials/_msg.handlebars
         
     ```
 
-[] Configurar o Banco de dados Mongodb com Mongoose
+[x] Configurar o Banco de dados Mongodb com Mongoose
+
+Em app.js
+
+    ```
+    
+        mongoose.connect('mongodb://localhost/DevTools').then(()=>{
+            console.log('Conectado ao Banco de dados...')
+        }).catch((error)=>{
+            console.error(error)
+        })
+    
+    
+    ```

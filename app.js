@@ -6,6 +6,8 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const { append } = require('vary')
 const adm = require('./routes/adm')
+const mongoose = require('mongoose')
+const res = require('express/lib/response')
 //Config
     //express
         const app = express()
@@ -36,9 +38,22 @@ const adm = require('./routes/adm')
         app.set('views', './views')
     //public bootstrap
         app.use(express.static(path.join(__dirname + '/public')))
-
+    
+    //mongoose
+        mongoose.connect('mongodb://localhost/DevTools').then(()=>{
+            console.log('Conectado ao Banco de dados...')
+        }).catch((error)=>{
+            console.error(error)
+        })
 //rotas
-        app.use("/adm", adm)
+
+    //raiz
+        app.get('/', (req, res)=>{
+            res.redirect('/adm')
+        })
+    
+    //grupo de rotas adm
+        app.use("/adm", adm)    
 
 
 //outros
