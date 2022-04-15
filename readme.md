@@ -100,7 +100,9 @@
 
 -views
     - layouts
+
     - partials
+    
     - adm
 
     
