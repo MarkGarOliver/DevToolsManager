@@ -88,34 +88,38 @@
     ```
 
 [x] Estruturar pastas base
-    - models
 
-    - public
-        - css
-        - js
-        - img
+- models
+
+- public
+    - css
+    - js
+    - img
+
+- routes
+
+-views
+    - layouts
+    - partials
+    - adm
+
     
-    - routes
-
-    -views
-        - layouts
-        - partials
-        - adm
-
 [x] Configurar e Validar se o Bootstrap está ok
-    Em app.js:
 
-    ```
-        //public bootstrap
-            app.use(express.static(path.join(__dirname + '/public')))
+Em app.js:
 
-    ```
-    Na view main do handlebars: 
+```
+    //public bootstrap
+        app.use(express.static(path.join(__dirname + '/public')))
 
-    ```
+```
+Na view main do handlebars: 
 
-        <link rel="stylesheet" href="/css/bootstrap.css">
+```
 
-    ```
+    <link rel="stylesheet" href="/css/bootstrap.css">
+
+```
+
 
 [x] Criar repositório Git e GitHub
