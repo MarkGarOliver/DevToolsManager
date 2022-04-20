@@ -186,15 +186,108 @@ Em app.js
 
 [x] Criar rota para a aplicação TodoList
 
-[x] Criar aplicação TodoListx
+    ```
+        /Tarefas pendentes
+
+        router.get('/todolist', (req, res)=>{
+            Tarefa.find({estado: ''}).lean().then((tarefas)=>{
+                res.render('adm/todolist/tarefasPendentes', {tarefas: tarefas})
+            })
+        })
+
+        //Tarefas Feitas
+
+        router.get('/todolist/feitas', (req, res)=>{
+            Tarefa.find({estado: 'concluida'}).lean().then((tarefasFeitas)=>{
+
+                res.render('adm/todolist/tarefasFeitas', {tarefasFeitas: tarefasFeitas})
+            })
+            
+        })
+
+    
+    ```
+
+[x] Criar aplicação TodoList Front
 
 - [x] Criar Model para Todolist
 
-- [x] Funcionalidade de criar 
+    ```
+        const mongoose = require('mongoose')
+        const Schema = mongoose.Schema
 
+
+        const Tarefa = new Schema({
+            nome: {
+                type: String,
+                require: true
+            },
+            comentario: {
+                type: String,
+                default: 'Comentario'
+            },
+            estado: {
+                type: String,
+                default: ''
+            },
+            data: {
+                type: Date,
+                default: Date.now()
+            }
+        })
+
+
+        mongoose.model('tarefa', Tarefa)
+
+    ```
+
+- [x] Funcionalidade de criar  
+
+    ```
+        //Criar nova Tarefa
+        router.post('/todolist/nova', (req, res)=>{
+            const novaTarefa = ({
+                nome: req.body.nome,
+                comentario: req.body.coments
+            })
+
+            new Tarefa(novaTarefa).save().then(()=>{
+                req.flash('success_msg', 'Tarefa Criada com Sucesso!')
+                res.redirect('/adm/todolist')
+            }).catch((error)=>{
+                req.flash('error_msg', 'erro ao salvar nova tarefa, tente novamente ! ')
+                res.redirect('/todolist/tarefasPendentes')
+                console.error(error)
+            })
+        })
+    
+    ```
 - [x] Funcionalidade de Marcar como Feito
+    
+    ```
+        //Marcar tarefa como feita
+        router.post('/todolist/marcarcomofeita', (req, res)=>{
 
+        const id = `${req.body.id}`
+
+        Tarefa.findByIdAndUpdate({_id: id}, {'estado': 'concluida'}).lean().then((tarefa)=>{
+            req.flash('success_msg', 'Marcada Como Feita')
+            res.redirect('/adm/todolist/feitas')
+            })
+        })
+    ```
 - [x] Funcionalidade de Deletar
+
+    ```
+        //Deletar tarefa
+        router.post('/todolist/delete', (req, res)=>{
+            Tarefa.findByIdAndRemove(req.body.id).then(()=>{
+                req.flash('success_msg', 'deletado com sucesso')
+                res.redirect('/adm/todolist/feitas')
+            })
+        })
+
+    ```
 
 ### TimeControl
 
@@ -202,18 +295,127 @@ Estrutura collection MongoDb:
 - nome do projeto
 - pessoal ou empresarial
 - descrição do projeto
-- data de entrega ? sim qual?
+- data de criação
+- tempo de Trabalhado
+- estado (parado, trabalhando)
 
 Funcionalidade:
 
 - Play e Stop
     - quando estiver trabalhando dar play e quando para stop, para contabilizar as horas trabalhadas
 
-- editar data de entrega
+- editar as informações do projeto
 
-- editar descrição
+[x] Criar Model para a aplicação
 
-- editar nome
+```
+    const mongoose = require('mongoose')
+    const Schema = mongoose.Schema
 
-[] Criar View e rota para a aplicação
 
+    const Projeto = new Schema({
+        titulo: {
+            type: String,
+            require: true
+        },
+        descricao: {
+            type: String,
+            default: 'Comentario'
+        },
+        tipo: {
+            type: String,
+            default: 'Projeto Pessoal Default'
+        },
+        data: {
+            type: Date,
+            default: Date.now
+        },
+        tempoTrabalhadoEmSec: { //vou armazenar em segundos e para mostrar faço as conversões em minutos horas e afins
+            type: Number,
+            default: 0
+        }
+    })
+
+
+    mongoose.model('projeto', Projeto)
+
+```
+
+[x] Criar View e rota para a aplicação
+    
+```
+    router.get('/timecontrol', (req, res)=>{
+        Projeto.find().lean().then((projetos)=>{
+            
+            res.render('adm/timecontrol/timeControl', {projetos: projetos})
+        })
+    })
+
+```
+[ x ] Funcionalidade para criar novo projeto
+
+```
+    // Cria Novo Projeto
+    router.post('/timecontrol/add/projeto', (req, res)=>{
+        const criarProjeto = () =>{
+
+            if(req.body.titulo == ''){
+                req.flash('error_msg', 'erro ao salvar nova tarefa, verifique se preencheu os campos corretamente ')
+                res.redirect('/adm/timecontrol')
+            } else {
+                new Projeto(novoProjeto).save().then(()=>{
+                    req.flash('success_msg', 'Projeto Criada com Sucesso!')
+                    res.redirect('/adm/timecontrol')
+                }).catch((error)=>{
+                    req.flash('error_msg', 'erro ao salvar nova tarefa, tente novamente ! ')
+                    res.redirect('/adm/timecontrol')
+                    console.error(error)
+                })  
+            }
+            
+        }
+
+        if(req.body.projetopessoal == undefined){
+            
+            var novoProjeto = {
+                titulo: req.body.titulo,
+                descricao: req.body.descricao,
+                tipo: req.body.projetoempresarial
+            }
+
+            criarProjeto()
+        } else if (req.body.projetoempresarial == undefined) {
+            var novoProjeto = {
+                titulo: req.body.titulo,
+                descricao: req.body.descricao,
+                tipo: req.body.projetopessoal
+            }  
+            
+            criarProjeto()
+        } else {
+            req.flash('error_msg', 'Falha ao criar o projeto')
+            res.redirect('/adm/timecontrol')
+        }
+
+    })
+
+```
+
+[] Editar informações do projeto
+
+[] TimeControl | play and stop
+
+    obs: 
+        - Processamento será feito no back-end
+        
+        - trabalhar com minutos | setInterval
+        
+        - a cada um minuto adicionar no banco de dados um minuto
+        
+        - talvez renderizar a página principal novamente para não perder o processo de contabilizar o tempo
+        
+        - para exibir fazer as devidas conversões
+        
+        - adicionar campo no model: estado = trabalhando ou parado
+        
+        - exibir o estado do projeto com uma cor, trabalhando verde, parado vermelho.
