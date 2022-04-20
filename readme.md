@@ -186,7 +186,34 @@ Em app.js
 
 [x] Criar rota para a aplicação TodoList
 
-[] Criar aplicação TodoList
+[x] Criar aplicação TodoListx
 
-[] Criar Model para Todolist
+- [x] Criar Model para Todolist
+
+- [x] Funcionalidade de criar 
+
+- [x] Funcionalidade de Marcar como Feito
+
+- [x] Funcionalidade de Deletar
+
+### TimeControl
+
+Estrutura collection MongoDb: 
+- nome do projeto
+- pessoal ou empresarial
+- descrição do projeto
+- data de entrega ? sim qual?
+
+Funcionalidade:
+
+- Play e Stop
+    - quando estiver trabalhando dar play e quando para stop, para contabilizar as horas trabalhadas
+
+- editar data de entrega
+
+- editar descrição
+
+- editar nome
+
+[] Criar View e rota para a aplicação
 

@@ -55,7 +55,13 @@ const res = require('express/lib/response')
     //grupo de rotas adm
         app.use("/adm", adm)    
 
+    
+    //javascript para timecontrol
 
+        app.get('/public/javascript.js', (req, res)=>{
+            res.sendfile(__dirname + '/public/javascript.js')
+            // res.send('rota ok')
+        })
 //outros
 const port = 1104
 

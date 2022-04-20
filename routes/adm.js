@@ -3,10 +3,10 @@ const router = express.Router()
 const res = require('express/lib/response')
 
 const mongoose = require('mongoose')
-require('../models/Tarefa')
+require('../models/Tarefa'), require('../models/Projeto')
 
 const Tarefa = mongoose.model('tarefa')
-
+const Projeto = mongoose.model('projeto')
 
 
 
@@ -75,4 +75,58 @@ const Tarefa = mongoose.model('tarefa')
                     res.redirect('/adm/todolist/feitas')
                 })
             })
+    // TimeControl
+            router.get('/timecontrol', (req, res)=>{
+                Projeto.find().lean().then((projetos)=>{
+                    
+                    res.render('adm/timecontrol/timeControl', {projetos: projetos})
+                })
+
+            })
+
+            // Cria Novo Projeto
+                router.post('/timecontrol/add/projeto', (req, res)=>{
+                    const criarProjeto = () =>{
+
+                        if(req.body.titulo == ''){
+                            req.flash('error_msg', 'erro ao salvar nova tarefa, verifique se preencheu os campos corretamente ')
+                            res.redirect('/adm/timecontrol')
+                        } else {
+                            new Projeto(novoProjeto).save().then(()=>{
+                                req.flash('success_msg', 'Projeto Criada com Sucesso!')
+                                res.redirect('/adm/timecontrol')
+                            }).catch((error)=>{
+                                req.flash('error_msg', 'erro ao salvar nova tarefa, tente novamente ! ')
+                                res.redirect('/adm/timecontrol')
+                                console.error(error)
+                            })  
+                        }
+                        
+                    }
+
+                    if(req.body.projetopessoal == undefined){
+                        
+                        var novoProjeto = {
+                            titulo: req.body.titulo,
+                            descricao: req.body.descricao,
+                            tipo: req.body.projetoempresarial
+                        }
+
+                        criarProjeto()
+                    } else if (req.body.projetoempresarial == undefined) {
+                        var novoProjeto = {
+                            titulo: req.body.titulo,
+                            descricao: req.body.descricao,
+                            tipo: req.body.projetopessoal
+                        }  
+                        
+                        criarProjeto()
+                    } else {
+                        req.flash('error_msg', 'Falha ao criar o projeto')
+                        res.redirect('/adm/timecontrol')
+                    }
+
+                })
+
+  
 module.exports = router
