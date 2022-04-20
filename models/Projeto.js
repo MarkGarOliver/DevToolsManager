@@ -19,9 +19,18 @@ const Projeto = new Schema({
         type: Date,
         default: Date.now
     },
-    tempoTrabalhadoEmSec: { //vou armazenar em segundos e para mostrar faço as conversões em minutos horas e afins
+    dataPlay: {
+        type: Date
+    },
+    dataStop: {
+        type: Date
+    },
+    tempo: { //vou armazenar em minutos e para mostrar faço as conversões em horas e afins
         type: Number,
         default: 0
+    },
+    estado: {
+        type: String
     }
 })
 

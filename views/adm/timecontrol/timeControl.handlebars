@@ -46,18 +46,24 @@
         <br>
         <small>{{descricao}}</small>
         <br><br>
-        <small>data de criação: {{data}}</small>
+        <small>Ultimo Check Out: {{dataStop}}</small>
         <br><br>
-        <small>tempo trabalhado: {{tempoTrabalhadoEmSec}}</small>
+        <small>Status: {{estado}}</small>
+        <br>
+        <small>minutos trabalhados: {{tempo}}</small>
         <br><br>
 
-        
-        <button onclick="start()" class="btn btn-primary">Play</button>
 
-        <form action="" method="get">
-            <input id="tempo" type="hidden" value="0">
+        <form action="/adm/timecontrol/play" method="post">
+            <input name="id" type="hidden" value="{{_id}}">
 
-            <button onclick="pause()" class="btn btn-primary mt-4">Stop</button>
+            <button type="submit" class="btn btn-primary">Play</button>
+        </form>
+
+        <form action="/adm/timecontrol/stop" method="post">
+            <input name="button" type="hidden"  value="stop">
+            <input name="id" type="hidden" value="{{_id}}">
+            <button type="submit" class="btn btn-primary mt-4">Stop</button>
         </form>
 
         

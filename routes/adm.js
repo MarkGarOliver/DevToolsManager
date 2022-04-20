@@ -124,6 +124,70 @@ const Projeto = mongoose.model('projeto')
                     }
 
                 })
+            
+            // Play em Projeto
+                router.post('/timecontrol/play', (req, res)=>{
+                    const id = req.body.id
+                
+                    
+                    Projeto.findByIdAndUpdate(id, {dataPlay: new Date(), estado: 'trabalhando..'}).then(()=>{
+                        console.log('Check IN')
+                        res.redirect('/adm/timecontrol')
+                    }).catch((error)=>{
+                        console.error(error)
+                    })
 
-  
+
+                })
+
+            // Stop em Projeto
+            router.post('/timecontrol/stop', (req, res)=>{
+                const id = req.body.id
+            
+                
+                Projeto.findByIdAndUpdate(id, {dataStop: new Date(), estado: 'Parado'}).then(()=>{
+                    
+                    Projeto.find({_id: id}).lean().then((projeto)=>{
+                        var stopDate = projeto[0].dataStop
+                        var playDate = projeto[0].dataPlay
+                        
+                        var calcMilissegundos = Math.abs(stopDate.getTime() - playDate.getTime())
+                        var calcMinutos = Math.ceil(calcMilissegundos / (1000 * 60))
+                        
+                        console.log(calcMinutos)
+                        console.log(stopDate)
+                        
+                        var tempo = projeto[0].tempo
+
+                        tempo = tempo + calcMinutos
+                        
+                        Projeto.findByIdAndUpdate(id, {tempo: tempo}).then(()=>{
+                            console.log('check oout')
+                        })
+                        
+                        // console.log('Check Out')
+                    }).catch((error)=>{
+                        console.error(error)
+                    })
+
+                    res.redirect('/adm/timecontrol')
+                }).catch((error)=>{
+                    console.error(error)
+                })
+
+
+            })
+            
+                
+                
+
+
+
+
+
+
+
+
+
+
 module.exports = router
