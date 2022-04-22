@@ -4,6 +4,8 @@ const res = require('express/lib/response')
 
 const mongoose = require('mongoose')
 require('../models/Tarefa'), require('../models/Projeto')
+// axios
+const axios = require('axios')
 
 const Tarefa = mongoose.model('tarefa')
 const Projeto = mongoose.model('projeto')
@@ -13,7 +15,33 @@ const Projeto = mongoose.model('projeto')
 //rotas
     //pagina principal
         router.get('/', (req, res)=>{
-            res.render('adm/home')   
+            
+
+
+            async function getData(){
+                
+                //tesla
+                    const { data } = await axios("https://newsapi.org/v2/everything?q=tesla&from=2022-03-22&sortBy=publishedAt&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
+                    
+                    const allNewsTesla = data.articles
+                    var TeslaNews = []
+
+                    for(let i = 0; i < 3; i++){
+                        TeslaNews.push(allNewsTesla[i])
+                    }
+                //Apple
+                    const appleResponse = await axios("https://newsapi.org/v2/everything?q=apple&from=2022-04-21&to=2022-04-21&sortBy=popularity&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
+                    
+
+                    const allNewsApple = appleResponse.data.articles
+                    var AppleNews = []
+
+                    for(let i = 0; i < 3; i++){
+                        AppleNews.push(allNewsApple[i])
+                    }
+                res.render('adm/home', {tesla: TeslaNews, apple: AppleNews})
+            }
+            getData()
         })
 
     //todolist

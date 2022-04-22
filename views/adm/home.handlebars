@@ -1,2 +1,50 @@
-<h2>home adm</h2>
+{{!-- 
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/adm/todolist">noticias</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/adm/todolist/feitas">Feitas</a>
+  </li>
+</ul> --}}
+
+
+<h2 class="mt-4">Last News Tesla</h2>
+<div class="container mt-4" style="display: flex; flex-wrap: wrap; align-self:center;">
+
+
+    {{#each tesla}}
+        <div class="card mt-4" style="width: 20rem; margin: 1.3rem; height:auto;">
+            <img src="{{urlToImage}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{title}}</h5>
+                <p class="card-text">{{description}}</p>
+                <small>data: {{publishedAt}}</small>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+                <a href="{{url}}" target="_blank" class="btn btn-primary">View more</a>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+
+
+<h2 class="mt-4">Last News Apple</h2>
+<div class="container" style="display: flex; flex-wrap: wrap; align-self:center;">
+    {{#each apple}}
+        <div class="card mt-4" style="width: 20rem; margin: 1.3rem; height: auto;">
+            <img style="width:auto" src="{{urlToImage}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{title}}</h5>
+                <p class="card-text">{{description}}</p>
+
+                <small>data: {{publishedAt}}</small>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+                <a href="#" class="btn btn-primary">View more</a>
+            </div>
+        </div>
+    {{/each}}
+</div>
 
