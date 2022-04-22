@@ -20,20 +20,24 @@
         <br>
         <small>{{comentario}}</small>
         <br><br>
-        <small>data de criação: {{data}}</small>
+        <small>data de criação: {{dataExibicao}}</small>
         <br><br>
-        <form method="post" action="/adm/todolist/delete">
-          <input name="id" type="hidden" value="{{_id}}">
-          <button type="submit" class="btn btn-primary mt4">Deletar</button>
-        </form>
 
-        {{!-- <form style="" class="mt-4" method="post" action="#">
-        
-          <input name="id" type="hidden" value="{{_id}}">
-          <button type="submit" class="btn btn-primary mt4">Não Feito</button>
-          
+        <div style="display: flex; Align-items: center;">
 
-        </form> --}}
+
+          <form method="post" action="/adm/todolist/delete">
+            <input name="id" type="hidden" value="{{_id}}">
+            <button type="submit" class="btn btn-danger">Deletar</button>
+          </form>
+
+          <form style="margin-left:5px;" method="post" action="/adm/todolist/mudarstatus">
+            <input type="hidden" name="button" value="naoFeito">
+            <input name="id" type="hidden" value="{{_id}}">
+            <button type="submit" class="btn btn-secondary">Não Feito</button>
+
+          </form>
+        </div>
     </div>
   </div>
 {{/each}}

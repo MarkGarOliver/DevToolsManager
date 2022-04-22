@@ -67,16 +67,45 @@ const Projeto = mongoose.model('projeto')
                 })
             })
 
-        //Marcar tarefa como feita
-        router.post('/todolist/marcarcomofeita', (req, res)=>{
+        //Mudar Status
+        router.post('/todolist/mudarstatus', (req, res)=>{
 
             const id = `${req.body.id}`
+            var status
+            var redirect
+            var msg
+            if(req.body.button == 'Feito'){
+                status = 'concluida'
+                redirect = '/adm/todolist/feitas'
+                msg = 'Tarefa marcada como FEITA'
 
-            Tarefa.findByIdAndUpdate({_id: id}, {'estado': 'concluida'}).lean().then((tarefa)=>{
-                req.flash('success_msg', 'Marcada Como Feita')
-                res.redirect('/adm/todolist/feitas')
-            })
+            } else {
+                status = ''
+                redirect = '/adm/todolist'
+                msg = 'Tarefa marcada como NÃO FEITA'
+
+                
+            }
+
+            try {
+                Tarefa.findByIdAndUpdate({_id: id}, {'estado': status}).lean().then((tarefa)=>{
+                    req.flash('success_msg', msg)
+                    res.redirect(redirect)
+                })
+                
+            } catch (error) {
+                if(status == 'concluida'){
+                    req.flash('error_msg', 'Houve um erro ao marcar a tarefa como FEITA')
+                    res.redirect('/adm/todolist')
+                } else {
+                    req.flash('error_msg', 'Houve um erro ao voltar a tarefa para PENDENTE')
+                    res.redirect('/adm/todolist/feitas')
+                }
+            }
+
         })
+   
+
 
         //Deletar tarefa
             router.post('/todolist/delete', (req, res)=>{
@@ -168,65 +197,65 @@ const Projeto = mongoose.model('projeto')
                 })
 
             // Stop em Projeto
-            router.post('/timecontrol/stop', (req, res)=>{
-                const id = req.body.id
-                const datanow = new Date()
+                router.post('/timecontrol/stop', (req, res)=>{
+                    const id = req.body.id
+                    const datanow = new Date()
 
-                if(datanow.getMonth() > 9){
-                    if(datanow.getMinutes() > 9){
-                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
-                    } else {
-                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                    if(datanow.getMonth() > 9){
+                        if(datanow.getMinutes() > 9){
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                        } else {
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                        }
+                    }else{
+                        if(datanow.getMinutes() > 9){
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                        } else {
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                        }
                     }
-                }else{
-                    if(datanow.getMinutes() > 9){
-                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
-                    } else {
-                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
-                    }
-                }
-                Projeto.findByIdAndUpdate(id, {dataStop: new Date(), estado: 'Parado', dataStopExib: data}).then(()=>{
-                    
-                    Projeto.find({_id: id}).lean().then((projeto)=>{
-                        var stopDate = projeto[0].dataStop
-                        var playDate = projeto[0].dataPlay
+                    Projeto.findByIdAndUpdate(id, {dataStop: new Date(), estado: 'Parado', dataStopExib: data}).then(()=>{
                         
-                        var calcMilissegundos = Math.abs(stopDate.getTime() - playDate.getTime())
-                        var calcMinutos = Math.ceil(calcMilissegundos / (1000 * 60))
-                        
-                        console.log(calcMinutos)
-                        console.log(stopDate)
-                        
-                        var tempo = projeto[0].tempo
+                        Projeto.find({_id: id}).lean().then((projeto)=>{
+                            var stopDate = projeto[0].dataStop
+                            var playDate = projeto[0].dataPlay
+                            
+                            var calcMilissegundos = Math.abs(stopDate.getTime() - playDate.getTime())
+                            var calcMinutos = Math.ceil(calcMilissegundos / (1000 * 60))
+                            
+                            console.log(calcMinutos)
+                            console.log(stopDate)
+                            
+                            var tempo = projeto[0].tempo
 
-                        tempo = tempo + calcMinutos
-                        
-                        Projeto.findByIdAndUpdate(id, {tempo: tempo}).then(()=>{
-                            console.log('check oout')
+                            tempo = tempo + calcMinutos
+                            
+                            Projeto.findByIdAndUpdate(id, {tempo: tempo}).then(()=>{
+                                console.log('check oout')
+                            })
+                            
+                            // console.log('Check Out')
+                        }).catch((error)=>{
+                            console.error(error)
                         })
-                        
-                        // console.log('Check Out')
+
+                        res.redirect('/adm/timecontrol')
                     }).catch((error)=>{
                         console.error(error)
                     })
 
-                    res.redirect('/adm/timecontrol')
-                }).catch((error)=>{
-                    console.error(error)
+
                 })
-
-
-            })
 
             //Form de edição do Projeto
-            router.post('/timecontrol/editar', (req, res)=>{
-                const id = req.body.id
-                Projeto.find({_id: id}).lean().then((projeto)=>{
+                router.post('/timecontrol/editar', (req, res)=>{
+                    const id = req.body.id
+                    Projeto.find({_id: id}).lean().then((projeto)=>{
 
 
-                    res.render('adm/timecontrol/editarProjeto', {pro: projeto})
+                        res.render('adm/timecontrol/editarProjeto', {pro: projeto})
+                    })
                 })
-            })
 
             // Edição do Projeto
                 router.post('/timecontrol/edit/projeto', (req, res)=>{

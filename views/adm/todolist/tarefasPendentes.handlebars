@@ -35,8 +35,8 @@
         <br><br>
         <small>data de criação: {{dataExibicao}}</small>
         <br><br>
-        <form method="post" action="/adm/todolist/marcarcomofeita">
-        
+        <form method="post" action="/adm/todolist/mudarstatus">
+          <input type="hidden" name="button" value="Feito">
           <input name="id" type="hidden" value="{{_id}}">
           <button type="submit" class="btn btn-primary mt4">Marcar como Feita</button>
           
