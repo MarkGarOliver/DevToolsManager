@@ -22,8 +22,14 @@ const Projeto = new Schema({
     dataPlay: {
         type: Date
     },
+    dataPlayExib: {
+        type: String
+    },
     dataStop: {
         type: Date
+    },
+    dataStopExib: {
+        type: String
     },
     tempo: { //vou armazenar em minutos e para mostrar faço as conversões em horas e afins
         type: Number,

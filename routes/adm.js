@@ -39,9 +39,22 @@ const Projeto = mongoose.model('projeto')
 
         //Criar nova Tarefa
             router.post('/todolist/nova', (req, res)=>{
+
+                const datanow = new Date()
+
+                if(datanow.getMonth() > 9){
+                    var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+
+                }else{
+
+                    var data = `${datanow.getDate()}/0${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                }
+
+
                 const novaTarefa = ({
                     nome: req.body.nome,
-                    comentario: req.body.coments
+                    comentario: req.body.coments,
+                    dataExibicao: data
                 })
 
                 new Tarefa(novaTarefa).save().then(()=>{
@@ -127,9 +140,24 @@ const Projeto = mongoose.model('projeto')
             // Play em Projeto
                 router.post('/timecontrol/play', (req, res)=>{
                     const id = req.body.id
-                
+
+                    const datanow = new Date()
+
+                    if(datanow.getMonth() > 9){
+                        if(datanow.getMinutes() > 9){
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                        } else {
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                        }
+                    }else{
+                        if(datanow.getMinutes() > 9){
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                        } else {
+                            var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                        }
+                    }
                     
-                    Projeto.findByIdAndUpdate(id, {dataPlay: new Date(), estado: 'trabalhando..'}).then(()=>{
+                    Projeto.findByIdAndUpdate(id, {dataPlay: new Date(), estado: 'trabalhando..', dataPlayExib: data}).then(()=>{
                         console.log('Check IN')
                         res.redirect('/adm/timecontrol')
                     }).catch((error)=>{
@@ -142,9 +170,22 @@ const Projeto = mongoose.model('projeto')
             // Stop em Projeto
             router.post('/timecontrol/stop', (req, res)=>{
                 const id = req.body.id
-            
-                
-                Projeto.findByIdAndUpdate(id, {dataStop: new Date(), estado: 'Parado'}).then(()=>{
+                const datanow = new Date()
+
+                if(datanow.getMonth() > 9){
+                    if(datanow.getMinutes() > 9){
+                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                    } else {
+                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                    }
+                }else{
+                    if(datanow.getMinutes() > 9){
+                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:${datanow.getMinutes()}`
+                    } else {
+                        var data = `${datanow.getDate()}/${datanow.getMonth()}/${datanow.getFullYear()} - ${datanow.getHours()}:0${datanow.getMinutes()}`
+                    }
+                }
+                Projeto.findByIdAndUpdate(id, {dataStop: new Date(), estado: 'Parado', dataStopExib: data}).then(()=>{
                     
                     Projeto.find({_id: id}).lean().then((projeto)=>{
                         var stopDate = projeto[0].dataStop

@@ -18,6 +18,9 @@ const Tarefa = new Schema({
     data: {
         type: Date,
         default: Date.now()
+    },
+    dataExibicao: {
+        type: String
     }
 })
 
