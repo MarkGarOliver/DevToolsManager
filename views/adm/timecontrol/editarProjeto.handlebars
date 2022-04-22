@@ -1,0 +1,27 @@
+{{#each pro}}
+
+
+    <div class="container card">
+        <form action="/adm/timecontrol/edit/projeto" method="post">
+            {{!-- titulo --}}
+            <div class="input-group mt-4">
+            <span class="input-group-text" id="inputGroup-sizing-default">Titulo</span>
+            <input value="{{titulo}}" name="titulo" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            {{!-- Descrição do projeto --}}
+            <div class="input-group mt-4">
+            <span class="input-group-text">Descrição</span>
+            <textarea rows="25" name="descricao" class="form-control" aria-label="With textarea">{{descricao}}</textarea>
+            </div>
+
+            <input value="{{_id}}" type="hidden" name="id" >
+           
+            <div style="display: flex; justify-content: flex-end; margin-bottom:10px;" class="container ">
+
+                <button type="submit" style="margin-left:10px" class="btn btn-primary mt-4">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+
+{{/each}}

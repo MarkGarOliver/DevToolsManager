@@ -46,25 +46,29 @@
         <br>
         <small>{{descricao}}</small>
         <br><br>
+        <small>Ultimo Check In: {{dataPlay}}</small>
+        <br>
         <small>Ultimo Check Out: {{dataStop}}</small>
         <br><br>
-        <small>Status: {{estado}}</small>
+        <small>Status: <strong>{{estado}}</strong></small>
         <br>
-        <small>minutos trabalhados: {{tempo}}</small>
+        <small>minutos trabalhados: <strong>{{tempo}}</strong></small>
         <br><br>
 
 
-        <form action="/adm/timecontrol/play" method="post">
-            <input name="id" type="hidden" value="{{_id}}">
+        <div style="display: flex; Align-items: center;">
 
-            <button type="submit" class="btn btn-primary">Play</button>
-        </form>
+            <form style="margin-left: 5px;" action="/adm/timecontrol/play" method="post">
+                <input name="id" type="hidden" value="{{_id}}">
+                <button type="submit" class="btn btn-primary">Play</button>
+            </form>
 
-        <form action="/adm/timecontrol/stop" method="post">
-            <input name="button" type="hidden"  value="stop">
-            <input name="id" type="hidden" value="{{_id}}">
-            <button type="submit" class="btn btn-primary mt-4">Stop</button>
-        </form>
+            <form style="margin-left: 5px;" action="/adm/timecontrol/stop" method="post">
+                <input name="id" type="hidden" value="{{_id}}">
+                <button type="submit" class="btn btn-primary">Stop</button>
+            </form>
+        </div>
+
 
         
 
@@ -75,5 +79,7 @@
         </form>
     </div>
   </div>
+
+
 {{/each}}
 

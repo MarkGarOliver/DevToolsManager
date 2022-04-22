@@ -20,7 +20,7 @@ const Projeto = mongoose.model('projeto')
         //Tarefas Pendentes
             router.get('/todolist', (req, res)=>{
 
-                Tarefa.find({estado: ''}).lean().then((tarefas)=>{
+                Tarefa.find({estado: ''}).lean().sort({data: 'desc'}).then((tarefas)=>{
 
                     res.render('adm/todolist/tarefasPendentes', {tarefas: tarefas})
                 })
@@ -30,7 +30,7 @@ const Projeto = mongoose.model('projeto')
         //Tarefas Feitas
     
             router.get('/todolist/feitas', (req, res)=>{
-                Tarefa.find({estado: 'concluida'}).lean().then((tarefasFeitas)=>{
+                Tarefa.find({estado: 'concluida'}).lean().sort({data: 'desc'}).then((tarefasFeitas)=>{
 
                     res.render('adm/todolist/tarefasFeitas', {tarefasFeitas: tarefasFeitas})
                 })
@@ -74,8 +74,7 @@ const Projeto = mongoose.model('projeto')
             })
     // TimeControl
             router.get('/timecontrol', (req, res)=>{
-                Projeto.find().lean().then((projetos)=>{
-                    
+                Projeto.find().lean().sort({data: 'desc'}).then((projetos)=>{                    
                     res.render('adm/timecontrol/timeControl', {projetos: projetos})
                 })
 
@@ -90,7 +89,7 @@ const Projeto = mongoose.model('projeto')
                             res.redirect('/adm/timecontrol')
                         } else {
                             new Projeto(novoProjeto).save().then(()=>{
-                                req.flash('success_msg', 'Projeto Criada com Sucesso!')
+                                req.flash('success_msg', 'Projeto Criado com Sucesso!')
                                 res.redirect('/adm/timecontrol')
                             }).catch((error)=>{
                                 req.flash('error_msg', 'erro ao salvar nova tarefa, tente novamente ! ')
@@ -177,7 +176,32 @@ const Projeto = mongoose.model('projeto')
 
 
             })
-            
+
+            //Form de edição do Projeto
+            router.post('/timecontrol/editar', (req, res)=>{
+                const id = req.body.id
+                Projeto.find({_id: id}).lean().then((projeto)=>{
+
+
+                    res.render('adm/timecontrol/editarProjeto', {pro: projeto})
+                })
+            })
+
+            // Edição do Projeto
+                router.post('/timecontrol/edit/projeto', (req, res)=>{
+
+                    const id = req.body.id
+
+                    Projeto.findOneAndUpdate({_id: id}, {'titulo': req.body.titulo, 'descricao': req.body.descricao}).lean().then(()=>{
+               
+                        req.flash('success_msg', 'Alterações salvas com Sucesso !')
+                        res.redirect('/adm/timecontrol')
+                       
+                    }).catch((error)=>{
+                        req.flash('error_msg', 'houve um problema ao salvar as alterações !')
+                        res.redirect('/adm/timecontrol')
+                    })
+                })
                 
                 
 
