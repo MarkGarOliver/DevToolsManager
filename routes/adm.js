@@ -21,8 +21,8 @@ const Projeto = mongoose.model('projeto')
             async function getData(){
                 
                 //tesla
-                    const { data } = await axios("https://newsapi.org/v2/everything?q=tesla&from=2022-03-22&sortBy=publishedAt&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
-                    
+                    const { data } = await axios("https://newsapi.org/v2/everything?q=tesla&from=2022-03-28&sortBy=publishedAt&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
+
                     const allNewsTesla = data.articles
                     var TeslaNews = []
 
@@ -30,8 +30,7 @@ const Projeto = mongoose.model('projeto')
                         TeslaNews.push(allNewsTesla[i])
                     }
                 //Apple
-                    const appleResponse = await axios("https://newsapi.org/v2/everything?q=apple&from=2022-04-21&to=2022-04-21&sortBy=popularity&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
-                    
+                    const appleResponse = await axios("https://newsapi.org/v2/everything?q=apple&from=2022-04-27&to=2022-04-27&sortBy=popularity&apiKey=3cbd15ffaf3d4377886a2aef972f6914")
 
                     const allNewsApple = appleResponse.data.articles
                     var AppleNews = []

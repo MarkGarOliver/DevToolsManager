@@ -8,6 +8,7 @@ const { append } = require('vary')
 const adm = require('./routes/adm')
 const mongoose = require('mongoose')
 const res = require('express/lib/response')
+const passGenerator = require('./routes/passGenerator')
 //Config
     //express
         const app = express()
@@ -54,7 +55,9 @@ const res = require('express/lib/response')
     
     //grupo de rotas adm
         app.use("/adm", adm)    
-
+    
+    //grupo de rotas Pass Generator
+        app.use("/passgenerator", passGenerator)
     
     //javascript para timecontrol
 
@@ -63,7 +66,7 @@ const res = require('express/lib/response')
             // res.send('rota ok')
         })
 //outros
-const port = 1104
+const port = 1104 
 
 app.listen(port, ()=>{
     console.log('Server on...')
